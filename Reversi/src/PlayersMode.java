@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public final class PlayersMode extends Mode {
     public PlayersMode() {
         scriptMode();
@@ -29,19 +31,23 @@ public final class PlayersMode extends Mode {
 
         board.positionAnalysis(opponentsColor, usersColor);
         while (!board.isEnd()) {
+            setCopyBoard(board.cells);
             board.positionAnalysis(opponentsColor, usersColor);
             if (board.isEnd()) {
                 break;
             }
             playersMove(usersColor, 1, "◯");
+            cancelStep(1);
             if (board.isEnd()) {
                 break;
             }
+            setCopyBoard(board.cells);
             board.positionAnalysis(usersColor, opponentsColor);
             if (board.isEnd()) {
                 break;
             }
             playersMove(opponentsColor, 2, "●");
+            cancelStep(2);
         }
         System.out.println(board);
         results();
@@ -70,5 +76,42 @@ public final class PlayersMode extends Mode {
             line = in.nextLine();
         } while (!lineToInt(line));
         return Integer.parseInt(line);
+    }
+
+    private String askCancelStep() {
+        System.out.println(board);
+        System.out.println("Хотите выполнить отмену хода? (y/anything)");
+        return in.nextLine();
+    }
+
+    @Override
+    public void cancelStep(int num) {
+        String answer = askCancelStep();
+        while (answer.equals("y")) {
+            board.cells.clear();
+            for (ArrayList<Cell> cells : copyBoard) {
+                ArrayList<Cell> rowCells = new ArrayList<>(cells);
+                board.cells.add(rowCells);
+            }
+            switch (num) {
+                case 1 -> {
+                    setCopyBoard(board.cells);
+                    board.positionAnalysis(opponentsColor, usersColor);
+                    if (board.isEnd()) {
+                        break;
+                    }
+                    playersMove(usersColor, 1, "◯");
+                }
+                case 2 -> {
+                    setCopyBoard(board.cells);
+                    board.positionAnalysis(usersColor, opponentsColor);
+                    if (board.isEnd()) {
+                        break;
+                    }
+                    playersMove(opponentsColor, 2, "●");
+                }
+            }
+            answer = askCancelStep();
+        }
     }
 }

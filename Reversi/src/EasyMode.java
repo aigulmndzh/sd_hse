@@ -9,6 +9,7 @@ public final class EasyMode extends Mode{
     public int returnUserResult() {
         return board.countChips(usersColor);
     }
+
     @Override
     public void scriptMode() {
         int row;
@@ -16,6 +17,7 @@ public final class EasyMode extends Mode{
 
         board.positionAnalysis(opponentsColor, usersColor);
         while (!board.isEnd()) {
+            setCopyBoard(board.cells);
             System.out.print("Возможные позиции для вашего хода: \n");
             for (int[] ints : board.potentialPositions) {
                 System.out.printf("(%d, %d)\n", ints[0], ints[1]);
@@ -35,6 +37,7 @@ public final class EasyMode extends Mode{
             if (!setComputerPosition()) {
                 break;
             }
+            cancelStep(0);
             board.positionAnalysis(opponentsColor, usersColor);
         }
         System.out.println(board);
@@ -64,6 +67,19 @@ public final class EasyMode extends Mode{
             line = in.nextLine();
         } while (!lineToInt(line));
         return Integer.parseInt(line);
+    }
+
+    @Override
+    public void cancelStep(int num) {
+        System.out.println(board);
+        System.out.println("Хотите выполнить отмену хода? (y/anything)");
+        if ("y".equals(in.nextLine())) {
+            board.cells.clear();
+            for (ArrayList<Cell> cells : copyBoard) {
+                ArrayList<Cell> rowCells = new ArrayList<>(cells);
+                board.cells.add(rowCells);
+            }
+        }
     }
 
     // оценка и ход компьютера

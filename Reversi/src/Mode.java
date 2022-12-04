@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -7,6 +8,7 @@ abstract class Mode {
     final Color usersColor = Color.BLACK;
     final Color opponentsColor = Color.WHITE;
     final Board board = new Board();
+    final ArrayList<ArrayList<Cell>> copyBoard = new ArrayList<>();
 
     public abstract void scriptMode();
     public abstract void results();
@@ -16,4 +18,21 @@ abstract class Mode {
     }
 
     public abstract int getRowOrColumn(String rowOrColumn, int num, String colorString);
+
+    protected void setCopyBoard(ArrayList<ArrayList<Cell>> cells) {
+        if (!copyBoard.isEmpty()) {
+            copyBoard.clear();
+        }
+
+        for (ArrayList<Cell> items : cells) {
+            ArrayList<Cell> rowCells = new ArrayList<>();
+            for (Cell cell:items) {
+                Cell newcell = new Cell(cell.getIsEmpty(), cell.getColor());
+                rowCells.add(newcell);
+            }
+            copyBoard.add(rowCells);
+        }
+    }
+
+    public abstract void cancelStep(int num);
 }

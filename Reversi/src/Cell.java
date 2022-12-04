@@ -7,9 +7,13 @@ public final class Cell {
         isEmpty = true;
     }
 
-    public Cell(Color color) {
-        isEmpty = false;
-        this.color = color;
+    public Cell(boolean isEmpty, Color color) {
+        if (!isEmpty) {
+            this.isEmpty = false;
+            this.color = color;
+        } else {
+            this.isEmpty = true;
+        }
     }
 
     public boolean getIsPriority() {
