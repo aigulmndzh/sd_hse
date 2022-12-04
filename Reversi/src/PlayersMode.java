@@ -19,9 +19,9 @@ public final class PlayersMode extends Mode {
         do {
             row = getRowOrColumn("ряд", num, colorString);
             column = getRowOrColumn("столбец", num, colorString);
-        } while (!board.checkUserPosition(row, column));
+        } while (!checkUserPosition(row, column));
 
-        board.setUserPosition(row, column, color);
+        setUserPosition(row, column, color);
     }
 
     @Override
@@ -30,20 +30,20 @@ public final class PlayersMode extends Mode {
                 "цвет фишек ИГРОКА 2 - белые ●");
 
         board.positionAnalysis(opponentsColor, usersColor);
-        while (!board.isEnd()) {
+        while (!isEnd()) {
             setCopyBoard(board.cells);
             board.positionAnalysis(opponentsColor, usersColor);
-            if (board.isEnd()) {
+            if (isEnd()) {
                 break;
             }
             playersMove(usersColor, 1, "◯");
             cancelStep(1);
-            if (board.isEnd()) {
+            if (isEnd()) {
                 break;
             }
             setCopyBoard(board.cells);
             board.positionAnalysis(usersColor, opponentsColor);
-            if (board.isEnd()) {
+            if (isEnd()) {
                 break;
             }
             playersMove(opponentsColor, 2, "●");
@@ -97,7 +97,7 @@ public final class PlayersMode extends Mode {
                 case 1 -> {
                     setCopyBoard(board.cells);
                     board.positionAnalysis(opponentsColor, usersColor);
-                    if (board.isEnd()) {
+                    if (isEnd()) {
                         break;
                     }
                     playersMove(usersColor, 1, "◯");
@@ -105,7 +105,7 @@ public final class PlayersMode extends Mode {
                 case 2 -> {
                     setCopyBoard(board.cells);
                     board.positionAnalysis(usersColor, opponentsColor);
-                    if (board.isEnd()) {
+                    if (isEnd()) {
                         break;
                     }
                     playersMove(opponentsColor, 2, "●");

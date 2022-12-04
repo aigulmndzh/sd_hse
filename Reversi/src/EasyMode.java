@@ -16,7 +16,7 @@ public final class EasyMode extends Mode{
         int column;
 
         board.positionAnalysis(opponentsColor, usersColor);
-        while (!board.isEnd()) {
+        while (!isEnd()) {
             setCopyBoard(board.cells);
             System.out.print("Возможные позиции для вашего хода: \n");
             for (int[] ints : board.potentialPositions) {
@@ -28,9 +28,9 @@ public final class EasyMode extends Mode{
             do {
                 row = getRowOrColumn("ряд", 0, "◯");
                 column = getRowOrColumn("столбец", 0, "◯");
-            } while (!board.checkUserPosition(row, column));
-            board.setUserPosition(row, column, usersColor);
-            if (board.isEnd()) {
+            } while (!checkUserPosition(row, column));
+            setUserPosition(row, column, usersColor);
+            if (isEnd()) {
                 break;
             }
             //ход компьютера
@@ -159,7 +159,7 @@ public final class EasyMode extends Mode{
 
     private boolean setComputerPosition() {
         board.positionAnalysis(usersColor, opponentsColor);
-        if (board.isEnd()) {
+        if (isEnd()) {
             return false;
         }
         double si;
@@ -184,7 +184,7 @@ public final class EasyMode extends Mode{
         if (maximPositions.size() != 0) {
             int[] maximPosition = maximPositions.get((int) (Math.random() * (maximPositions.size())));
             System.out.println("\nХод компьтера: " + maximPosition[0] + " " + maximPosition[1]);
-            board.setUserPosition(maximPosition[0], maximPosition[1], opponentsColor);
+            setUserPosition(maximPosition[0], maximPosition[1], opponentsColor);
         }
         return true;
     }
